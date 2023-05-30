@@ -1,0 +1,8 @@
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'org.kohsuke:github-api:1.314'
+  testImplementation 'com.netflix.nebula:nebula-test:10.5.0'
+}
