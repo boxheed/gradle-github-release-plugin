@@ -1,0 +1,77 @@
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: cimg/openjdk:11.0
+    working_directory: ~/repo
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    steps:
+      - run:
+          name: setup
+          command: source <(curl -s https://raw.githubusercontent.com/boxheed/shippable-scripts/master/java-build-ci-setup)
+      - checkout
+      - run: ./gradlew clean build 
+  
+  security:
+    docker:
+      # specify the version you desire here
+      - image: cimg/openjdk:11.0
+    working_directory: ~/repo
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    steps:
+      - run:
+          name: setup
+          command: source <(curl -s https://raw.githubusercontent.com/boxheed/shippable-scripts/master/java-build-ci-setup)
+      - checkout
+      - run: ./gradlew clean dependencyCheckAnalyze
+
+  publish:
+    docker:
+      # specify the version you desire here
+      - image: cimg/openjdk:11.0
+    working_directory: ~/repo
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+    steps:
+      - run:
+          name: setup
+          command: source <(curl -s https://raw.githubusercontent.com/boxheed/shippable-scripts/master/java-build-ci-setup)
+      - checkout
+#      - run: ./gradlew clean verifyRelease createRelease
+      - run: ./gradlew clean build
+#      - run: ./gradlew publish
+#      - run: ./gradlew publishPlugins
+
+workflows:
+  build:
+    jobs:
+      - build:
+          context: boxhead-builds
+      - security:
+          context: boxhead-builds
+          requires:
+            - build
+          filters:
+            branches:
+              only: /^release.*$/
+      - publish:
+          context: boxhead-builds
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
