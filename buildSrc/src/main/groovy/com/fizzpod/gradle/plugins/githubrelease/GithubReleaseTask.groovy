@@ -12,7 +12,7 @@ public class GithubReleaseTask extends DefaultTask {
     private Project project
 
     @Inject
-    ClusterfuzzWriteCorpusTask(Project project) {
+    GithubReleaseTask(Project project) {
         this.project = project
     }
 
