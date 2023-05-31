@@ -16,7 +16,7 @@ buildscript {
 }
 
 apply plugin: 'com.fizzpod.pater-build'
-apply from: 'buildSrc/build.gradle'
+apply plugin: 'com.fizzpod.github-release'
 
 sourceSets {
   main {
@@ -47,13 +47,21 @@ sourceSets {
 dependencies {
   api gradleApi()
   api localGroovy()
-  
+  implementation 'org.kohsuke:github-api:1.314'
+  implementation 'org.apache.tika:tika-core:2.8.0'
+
 }
 
-dependencyCheck {
-  failBuildOnCVSS=7
-  suppressionFiles=["./cve-suppressions.xml"]
-  skipConfigurations=["spotbugs"]
+githubRelease {
+  token project.hasProperty("github_release_token")? github_release_token: ""
+  owner "boxheed"
+  repo project.name
+  tagName 'release-' + project.version
+  releaseName 'Release ' + project.version
+  targetCommitish "main"
+  releaseAssets { ->
+		jar.outputs.files
+	}
 }
 
 gradlePlugin {
