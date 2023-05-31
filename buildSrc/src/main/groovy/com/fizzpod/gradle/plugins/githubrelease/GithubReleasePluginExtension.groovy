@@ -1,9 +1,9 @@
 package com.fizzpod.gradle.plugins.githubrelease
 
-public class GitignorePluginExtension {
+public class GithubReleasePluginExtension {
 	String token
 	String tagName
 	String releaseName
-	String ManifestOwnersPlugin
+	String owner
 	String targetCommitish
 }

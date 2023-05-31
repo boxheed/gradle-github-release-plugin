@@ -16,7 +16,7 @@ buildscript {
 }
 
 apply plugin: 'com.fizzpod.pater-build'
-apply from: 'buildSrc/build.gradle'
+apply plugin: 'com.fizzpod.github-release'
 
 sourceSets {
   main {
@@ -48,12 +48,6 @@ dependencies {
   api gradleApi()
   api localGroovy()
   
-}
-
-dependencyCheck {
-  failBuildOnCVSS=7
-  suppressionFiles=["./cve-suppressions.xml"]
-  skipConfigurations=["spotbugs"]
 }
 
 gradlePlugin {

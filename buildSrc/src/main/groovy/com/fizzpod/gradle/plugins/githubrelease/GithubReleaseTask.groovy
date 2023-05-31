@@ -29,5 +29,6 @@ public class GithubReleaseTask extends DefaultTask {
 
     @TaskAction
     def runTask() {
+        println("Doing it")
     }
 }
