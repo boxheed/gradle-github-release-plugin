@@ -47,7 +47,21 @@ sourceSets {
 dependencies {
   api gradleApi()
   api localGroovy()
-  
+  implementation 'org.kohsuke:github-api:1.314'
+  implementation 'org.apache.tika:tika-core:2.8.0'
+
+}
+
+githubRelease {
+  token project.hasProperty("github_release_token")? github_release_token: ""
+  owner "boxheed"
+  repo project.name
+  tagName 'release-' + project.version
+  releaseName 'Release ' + project.version
+  targetCommitish "main"
+  releaseAssets { ->
+		jar.outputs.files
+	}
 }
 
 gradlePlugin {
