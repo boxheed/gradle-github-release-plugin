@@ -1,5 +1,7 @@
 package com.fizzpod.gradle.plugins.githubrelease
 
+import static GithubReleaseTaskResolvers.*
+
 import org.gradle.api.Project
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
@@ -36,23 +38,29 @@ public class GithubReleaseTask extends DefaultTask {
         
     @TaskAction
     def runTask() {
+        def context = [:]
         def extension = project[GithubReleasePlugin.NAME]
-        
-        GitHub github = GitHub.connectUsingOAuth(extension.token)
-        def myself = github.getMyself()
-        def repo = github.getRepository(extension.owner + "/" + extension.repo)
-        def builder = new GHReleaseBuilder(repo, extension.tagName)
-        def release = builder.name(extension.releaseName)
-            .commitish(extension.targetCommitish)
-            .draft(extension.draft)
-            .prerelease(extension.prerelease)
-            .body(extension.body)
+        github(context, extension)
+        repository(context, extension)
+        releaseName(context, extension)
+        tagName(context, extension)
+        targetCommitish(context, extension)
+        draft(context, extension)
+        prerelease(context, extension)
+        body(context, extension)
+        context.assets = project.files()
+        context.assets.setFrom(extension.releaseAssets.call())
+
+        def builder = new GHReleaseBuilder(context.repo, context.tagName)
+        def release = builder.name(context.releaseName)
+            .commitish(context.targetCommitish)
+            .draft(context.draft)
+            .prerelease(context.prerelease)
+            .body(context.body)
             .create()
         
-        def assets = project.files()
-        assets.setFrom(extension.releaseAssets.call())
         Tika tika = new Tika();
-        for (asset in assets.files) {
+        for (asset in context.assets.files) {
             String mimetype = tika.detect(asset)
             release.uploadAsset(asset, mimetype)
         }
