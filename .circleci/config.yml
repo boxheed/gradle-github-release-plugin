@@ -101,5 +101,5 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^release.*/
+              only: /^release-\d+\.\d+\.\d+$/
               
