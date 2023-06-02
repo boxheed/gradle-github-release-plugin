@@ -38,8 +38,9 @@ public class GithubReleaseTask extends DefaultTask {
         
     @TaskAction
     def runTask() {
-        def context = [:]
         def extension = project[GithubReleasePlugin.NAME]
+        def context = [:]
+        context.project = project
         github(context, extension)
         repository(context, extension)
         releaseName(context, extension)
@@ -48,21 +49,44 @@ public class GithubReleaseTask extends DefaultTask {
         draft(context, extension)
         prerelease(context, extension)
         body(context, extension)
-        context.assets = project.files()
-        context.assets.setFrom(extension.releaseAssets.call())
+        allowUploadToExisting(context, extension)
+        overwrite(context, extension)
+        dryRun(context, extension)
+        assets(context, extension)
+        release(context, extension)
 
-        def builder = new GHReleaseBuilder(context.repo, context.tagName)
-        def release = builder.name(context.releaseName)
+        if(context.dryRun) {
+            println("DryRun ${context}")
+        } else {
+            if(context.release && context.overwite) {
+                context.release.delete()
+                context.release = null
+            } else if (context.release && context.allowUploadToExisting) {
+                upload(context)
+            }
+            if(!context.release) {
+                create(context)
+                upload(context)
+            }
+        }
+        
+    }
+
+    def create(def context) {
+        context.release = context.repo.createRelease(context.tagName)
+            .name(context.releaseName)
             .commitish(context.targetCommitish)
             .draft(context.draft)
             .prerelease(context.prerelease)
             .body(context.body)
             .create()
-        
+    }
+
+    def upload(def context) {
         Tika tika = new Tika();
         for (asset in context.assets.files) {
             String mimetype = tika.detect(asset)
-            release.uploadAsset(asset, mimetype)
+            context.release.uploadAsset(asset, mimetype)
         }
     }
 }
