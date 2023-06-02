@@ -24,7 +24,6 @@ public class GithubReleaseTaskResolvers {
 		]
         def repo = resolve(extension.repo)
         def repoName = null
-        println("aa " + repo)
         patterns.any { p ->
             def matcher = p.matcher(repo) 
             if(matcher.matches()) {
@@ -65,6 +64,32 @@ public class GithubReleaseTaskResolvers {
 
     public static def draft(def context, def extension) {
         context.draft = resolve(extension.draft)
+        return context
+    }
+
+    public static def assets(def context, def extension) {
+        context.assets = context.project.files()
+        context.assets.setFrom(extension.releaseAssets.call())
+        return context
+    }
+
+    public static def release(def context, def extension) {
+        context.release = context.repo.getReleaseByTagName(context.tagName)
+        return context
+    }
+
+    public static def allowUploadToExisting(def context, def extension) {
+        context.allowUploadToExisting = extension.allowUploadToExisting
+        return context
+    }
+
+    public static def overwrite(def context, def extension) {
+        context.overwrite = extension.overwrite
+        return context
+    }
+
+    public static def dryRun(def context, def extension) {
+        context.dryRun = extension.dryRun
         return context
     }
 
