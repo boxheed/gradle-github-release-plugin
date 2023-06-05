@@ -47,7 +47,7 @@ sourceSets {
 dependencies {
   api gradleApi()
   api localGroovy()
-  implementation 'org.kohsuke:github-api:1.314'
+  implementation 'org.kohsuke:github-api:1.315'
   implementation 'org.apache.tika:tika-core:2.8.0'
 
 }
