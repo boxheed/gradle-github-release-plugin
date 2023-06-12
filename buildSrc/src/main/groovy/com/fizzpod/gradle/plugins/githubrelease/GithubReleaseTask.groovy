@@ -41,6 +41,7 @@ public class GithubReleaseTask extends DefaultTask {
         def extension = project[GithubReleasePlugin.NAME]
         def context = [:]
         context.project = project
+        context.extension = extension
         github(context, extension)
         repository(context, extension)
         releaseName(context, extension)
@@ -54,6 +55,7 @@ public class GithubReleaseTask extends DefaultTask {
         dryRun(context, extension)
         assets(context, extension)
         release(context, extension)
+        previousRelease(context, extension)
 
         if(context.dryRun) {
             println("DryRun ${context}")
@@ -73,6 +75,18 @@ public class GithubReleaseTask extends DefaultTask {
     }
 
     def create(def context) {
+        if(context.extension.generateReleaseNotes) {
+            def notes = new GithubReleaseNoteBuilder(
+                toTag: context.tagName,
+                fromTag: context.previousTagName,
+                token: context.token,
+                targetCommitish: context.targetCommitish,
+                repoName: context.repoName)
+                .get()
+                
+            context.body + notes.body
+            
+        }
         context.release = context.repo.createRelease(context.tagName)
             .name(context.releaseName)
             .commitish(context.targetCommitish)

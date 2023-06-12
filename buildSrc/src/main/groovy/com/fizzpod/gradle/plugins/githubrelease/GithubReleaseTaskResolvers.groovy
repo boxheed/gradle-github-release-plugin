@@ -12,6 +12,7 @@ public class GithubReleaseTaskResolvers {
 
     public static def github(def context, def extension) {
         def token = resolve(extension.token)
+        context.token = token
         context.github = GitHub.connectUsingOAuth(token)
         return context
     }
@@ -40,6 +41,7 @@ public class GithubReleaseTaskResolvers {
             repoName = "${owner}/${repo}"
         }
         //create the repository
+        context.repoName = repoName
         context.repo = context.github.getRepository(repoName)
         return context
     }
@@ -75,6 +77,17 @@ public class GithubReleaseTaskResolvers {
 
     public static def release(def context, def extension) {
         context.release = context.repo.getReleaseByTagName(context.tagName)
+        return context
+    }
+    
+    public static def previousRelease(def context, def extension) {
+        context.previousTagName = ""
+        def previousRelease = context.repo.listReleases().find {
+            release -> release.getTagName() != context.tagName 
+        }
+        if(previousRelease != null) {
+            context.previousTagName = previousRelease.getTagName()
+        }
         return context
     }
 
