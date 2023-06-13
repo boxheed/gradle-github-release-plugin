@@ -76,7 +76,7 @@ public class GithubReleaseTask extends DefaultTask {
 
     def create(def context) {
         if(context.extension.generateReleaseNotes) {
-            def notes = new GithubReleaseNoteBuilder(
+            def notes = new GithubReleaseNotes(
                 toTag: context.tagName,
                 fromTag: context.previousTagName,
                 token: context.token,
@@ -84,7 +84,7 @@ public class GithubReleaseTask extends DefaultTask {
                 repoName: context.repoName)
                 .get()
                 
-            context.body + notes.body
+            context.body = context.body + notes.body
             
         }
         context.release = context.repo.createRelease(context.tagName)
