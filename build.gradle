@@ -48,7 +48,7 @@ dependencies {
   api gradleApi()
   api localGroovy()
   implementation 'com.squareup.okhttp3:okhttp:4.11.0'
-  implementation 'org.kohsuke:github-api:1.315'
+  implementation 'org.kohsuke:github-api:1.316'
   implementation 'org.apache.tika:tika-core:2.8.0'
 
 }
