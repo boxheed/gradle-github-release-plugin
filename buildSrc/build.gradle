@@ -5,8 +5,8 @@ repositories {
 dependencies {
 
   implementation 'com.squareup.okhttp3:okhttp:4.11.0'
-  implementation 'org.kohsuke:github-api:1.315'
-  implementation 'org.apache.tika:tika-core:2.8.0'
+  implementation 'org.kohsuke:github-api:1.316'
+  implementation 'org.apache.tika:tika-core:2.9.0'
   
   testImplementation 'com.netflix.nebula:nebula-test:10.5.0'
 }
