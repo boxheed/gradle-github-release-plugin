@@ -26,8 +26,9 @@ To use the Gradle GitHub Release Plugin, add the following to your project's `bu
 plugins {
     id 'com.github.lifecompany.github-release' version '0.3.0'
 }
+```
 
-You can replace '0.3.0' with the desired version of the plugin.
+You can replace `0.3.0` with the desired version of the plugin.
 
 ## Configuration
 To configure the plugin, you can add the following block to your build.gradle file:
