@@ -5,6 +5,7 @@ import static GithubReleaseTaskResolvers.*
 import org.gradle.api.Project
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
+import groovy.json.*
 import javax.inject.Inject
 
 import org.kohsuke.github.GitHub
@@ -56,9 +57,21 @@ public class GithubReleaseTask extends DefaultTask {
         assets(context, extension)
         release(context, extension)
         previousRelease(context, extension)
-
+        if(context.extension.generateReleaseNotes) {
+            def notes = new GithubReleaseNotes(
+                toTag: context.tagName,
+                fromTag: context.previousTagName,
+                token: context.token,
+                targetCommitish: context.targetCommitish,
+                repoName: context.repoName)
+                .get()
+                
+            context.body = context.body + notes.body
+            
+        }
         if(context.dryRun) {
-            println("DryRun ${context}")
+            println("DryRun:")
+            println(context)
         } else {
             if(context.release && context.overwite) {
                 context.release.delete()
@@ -75,18 +88,7 @@ public class GithubReleaseTask extends DefaultTask {
     }
 
     def create(def context) {
-        if(context.extension.generateReleaseNotes) {
-            def notes = new GithubReleaseNotes(
-                toTag: context.tagName,
-                fromTag: context.previousTagName,
-                token: context.token,
-                targetCommitish: context.targetCommitish,
-                repoName: context.repoName)
-                .get()
-                
-            context.body = context.body + notes.body
-            
-        }
+        
         context.release = context.repo.createRelease(context.tagName)
             .name(context.releaseName)
             .commitish(context.targetCommitish)
