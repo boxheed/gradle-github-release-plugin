@@ -1,4 +1,4 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/boxheed/gradle-github-release-plugin/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/boxheed/gradle-github-release-plugin/tree/main)
+[![CircleCI](https://circleci.com/gh/boxheed/gradle-github-release-plugin/tree/main.svg?style=shield)](https://circleci.com/gh/boxheed/gradle-github-release-plugin/tree/main)
 
 # Gradle GitHub Release Plugin
 
