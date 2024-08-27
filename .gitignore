@@ -5,3 +5,4 @@ bin
 .project
 .settings
 .vscode
+.git-semver
