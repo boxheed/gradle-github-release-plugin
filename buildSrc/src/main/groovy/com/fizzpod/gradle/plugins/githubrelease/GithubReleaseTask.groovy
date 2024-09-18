@@ -8,10 +8,6 @@ import org.gradle.api.tasks.TaskAction
 import groovy.json.*
 import javax.inject.Inject
 
-import org.kohsuke.github.GitHub
-import org.kohsuke.github.GHRepository
-import org.kohsuke.github.GHReleaseBuilder
-
 import org.apache.tika.Tika
 
 public class GithubReleaseTask extends DefaultTask {
