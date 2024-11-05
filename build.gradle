@@ -9,7 +9,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath ('com.fizzpod:gradle-plugin-opinion:18.0.3') {
+    classpath ('com.fizzpod:gradle-plugin-opinion:18.0.4') {
       exclude group: 'com.fizzpod', module: 'gradle-github-release-plugin'
     }
   }
@@ -49,7 +49,7 @@ dependencies {
   api localGroovy()
   implementation 'com.squareup.okhttp3:okhttp:4.12.0'
   implementation 'org.kohsuke:github-api:1.326'
-  implementation 'org.apache.tika:tika-core:2.9.2'
+  implementation 'org.apache.tika:tika-core:3.0.0'
 
   //########################################################
   //overriding the provided versions of these libraries as 
