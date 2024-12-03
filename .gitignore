@@ -6,3 +6,8 @@ bin
 .settings
 .vscode
 .git-semver
+gradle.lockfile
+settings-gradle.lockfile
+.lefthook
+./lefthook
+lefthook-local.yml
