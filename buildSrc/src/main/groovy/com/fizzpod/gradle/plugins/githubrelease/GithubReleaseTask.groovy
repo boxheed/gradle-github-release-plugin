@@ -1,14 +1,15 @@
+/* (C) 2024 */
+/* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
 import static GithubReleaseTaskResolvers.*
 
-import org.gradle.api.Project
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.TaskAction
 import groovy.json.*
 import javax.inject.Inject
-
 import org.apache.tika.Tika
+import org.gradle.api.DefaultTask
+import org.gradle.api.Project
+import org.gradle.api.tasks.TaskAction
 
 public class GithubReleaseTask extends DefaultTask {
 
@@ -95,7 +96,7 @@ public class GithubReleaseTask extends DefaultTask {
     }
 
     def upload(def context) {
-        Tika tika = new Tika();
+        Tika tika = new Tika()
         for (asset in context.assets.files) {
             String mimetype = tika.detect(asset)
             context.release.uploadAsset(asset, mimetype)

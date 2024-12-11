@@ -31,6 +31,7 @@ plugins {
 You can replace `0.3.0` with the desired version of the plugin.
 
 ## Configuration
+
 To configure the plugin, you can add the following block to your build.gradle file:
 
 ```groovy
@@ -46,6 +47,7 @@ githubRelease {
 }
 
 ```
+
 * token (required): Your GitHub personal access token with repo and write:packages scopes.
 * repo (optional): Your GitHub repository in the format username/repository. Automatically detected from the remote URL.
 * owner (optional): Github repository owner. Automatically detected from the remote URL.
@@ -53,15 +55,16 @@ githubRelease {
 * targetCommitish (optional): Branch name. Defaults to current branch.
 * generateReleaseNotes (optional): Automatically generate release notes using the github API
 * body (optional): The release note
-* draft (optional): Draft github release. Defaults to `true`. 
+* draft (optional): Draft github release. Defaults to `true`.
 * prerelease (optional): Prerelease flag. Defaults to `false`
 * releaseAssets (optional): A list of files to include as release assets.
 * allowUploadToExisting (optional): Allows upload to an existing release. Defaults to `false`
 * overwrite (optional): Overwrite existing release. Defaults to `false`
 * dryRun (optional): Perform a dry run. Defaults to `false`
-* apiEndpoint (unused): Override the default API endpoint. Default: `https://api.github.com` 
+* apiEndpoint (unused): Override the default API endpoint. Default: `https://api.github.com`
 
 ## Usage
+
 Once you've configured the plugin, you can create a GitHub release by running the following Gradle task:
 
 ```shell
@@ -71,5 +74,6 @@ Once you've configured the plugin, you can create a GitHub release by running th
 This task will use the configuration provided in your build.gradle file to create a release on GitHub.
 
 ## License
+
 This project is licensed under the Apache 2 License - see the LICENSE file for details.
 

@@ -1,9 +1,10 @@
+/* (C) 2024 */
+/* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
-import org.gradle.api.Project
-
-import okhttp3.*
 import groovy.json.*
+import okhttp3.*
+import org.gradle.api.Project
 
 public class GithubReleaseNotes {
     
@@ -27,8 +28,8 @@ public class GithubReleaseNotes {
     
         OkHttpClient okclient = new OkHttpClient()
             .newBuilder()
-            .build();
-        MediaType mediaType = MediaType.parse("application/json");
+            .build()
+        MediaType mediaType = MediaType.parse("application/json")
 
         RequestBody body = RequestBody.create(mediaType, payload)
         def url = "https://api.github.com/repos/" + repoName + "/releases/generate-notes"
@@ -39,7 +40,7 @@ public class GithubReleaseNotes {
             .addHeader("Accept", "application/vnd.github+json")
             .addHeader("X-GitHub-Api-Version", "2022-11-28")
             .addHeader("Authorization", "Bearer " + token)
-            .build();
+            .build()
         try(def response = okclient.newCall(request).execute()) {
             String content = response.body().string()
             def jsonSlurper = new JsonSlurper()
