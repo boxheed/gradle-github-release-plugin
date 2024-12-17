@@ -1,12 +1,12 @@
+/* (C) 2024 */
+/* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
-import org.gradle.api.Project
-
-import org.kohsuke.github.GitHub
-import org.kohsuke.github.GHRepository
-import org.kohsuke.github.GHReleaseBuilder
-
 import org.apache.tika.Tika
+import org.gradle.api.Project
+import org.kohsuke.github.GHReleaseBuilder
+import org.kohsuke.github.GHRepository
+import org.kohsuke.github.GitHub
 
 public class GithubReleaseTaskResolvers {
 
