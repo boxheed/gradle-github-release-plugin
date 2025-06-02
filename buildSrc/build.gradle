@@ -6,7 +6,7 @@ dependencies {
 
   implementation 'com.squareup.okhttp3:okhttp:4.12.0'
   implementation 'org.kohsuke:github-api:1.327'
-  implementation 'org.apache.tika:tika-core:3.1.0'
+  implementation 'org.apache.tika:tika-core:3.2.0'
 
   //########################################################
   //overriding the provided versions of these libraries as
