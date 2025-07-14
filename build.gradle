@@ -54,7 +54,7 @@ dependencies {
   //########################################################
   //overriding the provided versions of these libraries as 
   //they are not compatible with the dependency check plugin
-  implementation 'org.apache.commons:commons-lang3:3.17.0'
+  implementation 'org.apache.commons:commons-lang3:3.18.0'
   implementation 'org.apache.commons:commons-text:1.13.1'
   //########################################################
   
