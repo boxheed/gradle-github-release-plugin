@@ -9,7 +9,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath ('com.fizzpod:gradle-plugin-opinion:22.1.0') {
+    classpath ('com.fizzpod:gradle-plugin-opinion:24.0.1') {
       exclude group: 'com.fizzpod', module: 'gradle-github-release-plugin'
     }
   }
@@ -47,14 +47,14 @@ sourceSets {
 dependencies {
   api gradleApi()
   api localGroovy()
-  implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+  implementation 'com.squareup.okhttp3:okhttp:5.1.0'
   implementation 'org.kohsuke:github-api:1.327'
-  implementation 'org.apache.tika:tika-core:3.2.0'
+  implementation 'org.apache.tika:tika-core:3.2.1'
 
   //########################################################
   //overriding the provided versions of these libraries as 
   //they are not compatible with the dependency check plugin
-  implementation 'org.apache.commons:commons-lang3:3.17.0'
+  implementation 'org.apache.commons:commons-lang3:3.18.0'
   implementation 'org.apache.commons:commons-text:1.13.1'
   //########################################################
   
