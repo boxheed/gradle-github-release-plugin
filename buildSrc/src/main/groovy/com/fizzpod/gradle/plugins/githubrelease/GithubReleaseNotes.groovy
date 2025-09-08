@@ -1,4 +1,4 @@
-/* (C) 2024 */
+/* (C) 2024-2025 */
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
@@ -13,8 +13,7 @@ public class GithubReleaseNotes {
     def token = ""
     def targetCommitish = ""
     def repoName = ""
-    
-    
+    def endpoint = "https://api.github.com"
     
     def get() {
         
@@ -32,7 +31,7 @@ public class GithubReleaseNotes {
         MediaType mediaType = MediaType.parse("application/json")
 
         RequestBody body = RequestBody.create(mediaType, payload)
-        def url = "https://api.github.com/repos/" + repoName + "/releases/generate-notes"
+        def url = endpoint + "/repos/" + repoName + "/releases/generate-notes"
         Request request = new Request.Builder()
             .url(url)
             .method("POST", body)

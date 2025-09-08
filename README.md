@@ -43,12 +43,14 @@ githubRelease {
     generateReleaseNotes = true
     releaseAssets { ->
         jar.outputs.files
-	}
+    }
 }
-
 ```
 
 * token (required): Your GitHub personal access token with repo and write:packages scopes.
+* authorization (optional): An alias to `token`. If `token` is specified then that overrides the `authorization` value
+* login (optional): Username of the for the login to use for authentication that requires a user
+* github (optional): Closure to create the `org.kohsuke.github.api.GitHub` object used for the connection, if specified it overrides any `token`/`authorization`/`login` values
 * repo (optional): Your GitHub repository in the format username/repository. Automatically detected from the remote URL.
 * owner (optional): Github repository owner. Automatically detected from the remote URL.
 * releaseName (required): The name of the release
@@ -61,7 +63,43 @@ githubRelease {
 * allowUploadToExisting (optional): Allows upload to an existing release. Defaults to `false`
 * overwrite (optional): Overwrite existing release. Defaults to `false`
 * dryRun (optional): Perform a dry run. Defaults to `false`
-* apiEndpoint (unused): Override the default API endpoint. Default: `https://api.github.com`
+* apiEndpoint (optional): Override the default API endpoint. Default: `https://api.github.com`
+
+## Authentication Options for GitHub
+
+The plugin requires authentication to interact with the GitHub API. You can authenticate using a personal access token (PAT). Below are the details:
+
+- **Personal Access Token (PAT)**:  
+  You must provide a GitHub personal access token with the following scopes:
+  - `repo`: Grants full control of private repositories.
+  - `write:packages`: Allows writing to GitHub Packages.
+
+  To generate a personal access token:
+  1. Go to your GitHub account settings.
+  2. Navigate to **Developer settings > Personal access tokens > Tokens (classic)**.
+  3. Click **Generate new token**, select the required scopes, and copy the token.
+
+  Once generated, add the token to your `build.gradle` configuration:
+
+  ```groovy
+  githubRelease {
+      token = 'YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
+  }
+  ```
+- **Environment Variable**:  
+  Alternatively, you can set the token as an environment variable:
+
+  ```bash
+  export GITHUB_TOKEN=your_personal_access_token
+  ```
+
+  Then, reference it in your `build.gradle` file:
+
+  ```groovy
+  githubRelease {
+      token = System.getenv('GITHUB_TOKEN')
+  }
+  ```
 
 ## Usage
 
@@ -76,4 +114,3 @@ This task will use the configuration provided in your build.gradle file to creat
 ## License
 
 This project is licensed under the Apache 2 License - see the LICENSE file for details.
-
