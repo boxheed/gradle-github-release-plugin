@@ -1,4 +1,4 @@
-/* (C) 2024 */
+/* (C) 2024-2025 */
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
@@ -60,7 +60,8 @@ public class GithubReleaseTask extends DefaultTask {
                 fromTag: context.previousTagName,
                 token: context.token,
                 targetCommitish: context.targetCommitish,
-                repoName: context.repoName)
+                repoName: context.repoName,
+                endpoint: context.github.getApiUrl())
                 .get()
                 
             context.body = context.body + notes.body

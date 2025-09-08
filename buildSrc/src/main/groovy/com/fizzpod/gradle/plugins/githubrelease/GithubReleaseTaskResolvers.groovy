@@ -1,4 +1,4 @@
-/* (C) 2024 */
+/* (C) 2024-2025 */
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
@@ -11,9 +11,27 @@ import org.kohsuke.github.GitHub
 public class GithubReleaseTaskResolvers {
 
     public static def github(def context, def extension) {
-        def token = resolve(extension.token)
+        def token = resolve(extension.token)? resolve(extension.token):resolve(extension.authorization)
+        def endpoint = resolve(extension.apiEndpoint)
+        def login = resolve(extension.login)
+        def github = resolve(extension.github)
         context.token = token
-        context.github = GitHub.connectUsingOAuth(token)
+        context.endpoint = endpoint
+        context.login = login
+        if(github != null) {
+            context.github = github
+        } else if(token && endpoint && login) {
+            context.github = GitHub.connectToEnterpriseWithOAuth(endpoint, login, token)
+        } else if(token && endpoint) {
+            context.github = GitHub.connectUsingOAuth(endpoint, token)
+        } else if(token && login) {
+            context.github = GitHub.connect(login, token)
+        } else if(token) {
+            context.github = GitHub.connectUsingOAuth(token)
+        } else {
+            throw new IllegalArgumentException("GitHub token must be provided")
+        }
+
         return context
     }
 
