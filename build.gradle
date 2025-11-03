@@ -47,7 +47,7 @@ sourceSets {
 dependencies {
   api gradleApi()
   api localGroovy()
-  implementation 'com.squareup.okhttp3:okhttp:5.2.1'
+  implementation 'com.squareup.okhttp3:okhttp:5.3.0'
   implementation 'org.kohsuke:github-api:1.330'
   implementation 'org.apache.tika:tika-core:3.2.3'
 
