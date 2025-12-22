@@ -16,5 +16,5 @@ dependencies {
   //########################################################
   
 
-  testImplementation 'com.netflix.nebula:nebula-test:11.10.1'
+  testImplementation 'com.netflix.nebula:nebula-test:11.11.3'
 }
