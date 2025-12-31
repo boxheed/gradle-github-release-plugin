@@ -24,11 +24,11 @@ To use the Gradle GitHub Release Plugin, add the following to your project's `bu
 
 ```groovy
 plugins {
-    id 'com.github.lifecompany.github-release' version '0.3.0'
+    id 'com.fizzpod.github-release' version 'VERSION'
 }
 ```
 
-You can replace `0.3.0` with the desired version of the plugin.
+You can replace `VERSION` with the desired version of the plugin.
 
 ## Configuration
 
