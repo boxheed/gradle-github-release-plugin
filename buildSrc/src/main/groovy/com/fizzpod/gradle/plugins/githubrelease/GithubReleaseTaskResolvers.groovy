@@ -1,9 +1,10 @@
-/* (C) 2024-2025 */
+/* (C) 2024-2026 */
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
 import org.apache.tika.Tika
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
 import org.kohsuke.github.GHReleaseBuilder
 import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GitHub
@@ -136,8 +137,10 @@ public class GithubReleaseTaskResolvers {
 
     public static def resolve(def value) {
         def v = value
-        if(!(value instanceof Closure)) {
-            v = {value}
+        if (value instanceof Provider) {
+            v = { value.get() }
+        } else if (!(value instanceof Closure)) {
+            v = { value }
         }
         return v.call()
     }
