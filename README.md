@@ -50,7 +50,8 @@ githubRelease {
 * token (required): Your GitHub personal access token with repo and write:packages scopes.
 * authorization (optional): An alias to `token`. If `token` is specified then that overrides the `authorization` value
 * login (optional): Username of the for the login to use for authentication that requires a user
-* github (optional): Closure to create the `org.kohsuke.github.api.GitHub` object used for the connection, if specified it overrides any `token`/`authorization`/`login` values
+* client (optional): Closure to configure the underlying `okhttp3.OkHttpClient.Builder` used for HTTP requests. Receives the builder instance as its first parameter.
+* headers (optional): Map of custom HTTP headers (e.g. `[ 'Header-Name': 'value' ]`) to include in all API calls.
 * repo (optional): Your GitHub repository in the format username/repository. Automatically detected from the remote URL.
 * owner (optional): Github repository owner. Automatically detected from the remote URL.
 * releaseName (required): The name of the release

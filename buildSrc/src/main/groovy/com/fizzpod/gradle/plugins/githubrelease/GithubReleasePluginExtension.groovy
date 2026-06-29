@@ -1,4 +1,4 @@
-/* (C) 2024-2025 */
+/* (C) 2024-2026 */
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
@@ -20,5 +20,6 @@ public class GithubReleasePluginExtension {
     def dryRun = false
     def apiEndpoint = "https://api.github.com"
     def login = ""
-    def github = null
+    def client = null
+    def headers = [:]
 }

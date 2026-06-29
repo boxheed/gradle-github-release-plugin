@@ -47,9 +47,8 @@ sourceSets {
 dependencies {
   api gradleApi()
   api localGroovy()
-  implementation 'com.squareup.okhttp3:okhttp:5.3.2'
-  implementation 'org.kohsuke:github-api:1.330'
-  implementation 'org.apache.tika:tika-core:3.3.0'
+  implementation 'com.squareup.okhttp3:okhttp:5.4.0'
+  implementation 'org.apache.tika:tika-core:3.3.1'
 
   //########################################################
   //overriding the provided versions of these libraries as 
@@ -58,7 +57,9 @@ dependencies {
   implementation 'org.apache.commons:commons-text:1.15.0'
   //########################################################
   
-  
+  testImplementation 'com.netflix.nebula:nebula-test:12.4.3'
+  testImplementation 'com.squareup.okhttp3:mockwebserver:5.4.0'
+  testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 }
 
 /*
@@ -85,4 +86,8 @@ gradlePlugin {
       implementationClass = 'com.fizzpod.gradle.plugins.githubrelease.GithubReleasePlugin'
     }
   }
+}
+
+test {
+  useJUnitPlatform()
 }

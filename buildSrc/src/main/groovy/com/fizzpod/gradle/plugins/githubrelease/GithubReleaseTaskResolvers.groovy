@@ -2,12 +2,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
-import org.apache.tika.Tika
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
-import org.kohsuke.github.GHReleaseBuilder
-import org.kohsuke.github.GHRepository
-import org.kohsuke.github.GitHub
 
 public class GithubReleaseTaskResolvers {
 
@@ -15,21 +11,15 @@ public class GithubReleaseTaskResolvers {
         def token = resolve(extension.token)? resolve(extension.token):resolve(extension.authorization)
         def endpoint = resolve(extension.apiEndpoint)
         def login = resolve(extension.login)
-        def github = resolve(extension.github)
+        def clientConfigurer = extension.client
+        def customHeaders = extension.headers
         context.token = token
         context.endpoint = endpoint
         context.login = login
-        if(github != null) {
-            context.github = github
-        } else if(token && endpoint && login) {
-            context.github = GitHub.connectToEnterpriseWithOAuth(endpoint, login, token)
-        } else if(token && endpoint) {
-            context.github = GitHub.connectUsingOAuth(endpoint, token)
-        } else if(token && login) {
-            context.github = GitHub.connect(login, token)
-        } else if(token) {
-            context.github = GitHub.connectUsingOAuth(token)
-        } else {
+        context.clientConfigurer = clientConfigurer
+        context.customHeaders = customHeaders
+
+        if (!token) {
             throw new IllegalArgumentException("GitHub token must be provided")
         }
 
@@ -54,14 +44,14 @@ public class GithubReleaseTaskResolvers {
         if(repoName == null) {
             def owner = resolve(extension.owner)
             if("" == owner.trim()) {
-                def myself = context.github.getMyself()
-                owner = myself.getLogin()
+                def tempClient = new GithubClient(context.token, context.endpoint, "", context.clientConfigurer, context.customHeaders)
+                owner = tempClient.getLogin()
             }
             repoName = "${owner}/${repo}"
         }
         //create the repository
         context.repoName = repoName
-        context.repo = context.github.getRepository(repoName)
+        context.client = new GithubClient(context.token, context.endpoint, repoName, context.clientConfigurer, context.customHeaders)
         return context
     }
 
@@ -78,7 +68,7 @@ public class GithubReleaseTaskResolvers {
     public static def targetCommitish(def context, def extension) {
         context.targetCommitish = resolve(extension.targetCommitish)
         if("" == context.targetCommitish) {
-            context.targetCommitish = context.repo.getDefaultBranch()
+            context.targetCommitish = context.client.getDefaultBranch()
         }
         return context
     }
@@ -95,17 +85,17 @@ public class GithubReleaseTaskResolvers {
     }
 
     public static def release(def context, def extension) {
-        context.release = context.repo.getReleaseByTagName(context.tagName)
+        context.release = context.client.getReleaseByTagName(context.tagName)
         return context
     }
     
     public static def previousRelease(def context, def extension) {
         context.previousTagName = ""
-        def previousRelease = context.repo.listReleases().find {
-            release -> release.getTagName() != context.tagName 
+        def previousRelease = context.client.listReleases().find {
+            release -> release.tag_name != context.tagName 
         }
         if(previousRelease != null) {
-            context.previousTagName = previousRelease.getTagName()
+            context.previousTagName = previousRelease.tag_name
         }
         return context
     }

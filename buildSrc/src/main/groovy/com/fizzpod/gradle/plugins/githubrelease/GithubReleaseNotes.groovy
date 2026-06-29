@@ -1,4 +1,4 @@
-/* (C) 2024-2025 */
+/* (C) 2024-2026 */
 /* SPDX-License-Identifier: Apache-2.0 */
 package com.fizzpod.gradle.plugins.githubrelease
 
@@ -14,6 +14,8 @@ public class GithubReleaseNotes {
     def targetCommitish = ""
     def repoName = ""
     def endpoint = "https://api.github.com"
+    def clientConfigurer = null
+    Map customHeaders = [:]
     
     def get() {
         
@@ -25,21 +27,32 @@ public class GithubReleaseNotes {
         }
         def payload = JsonOutput.prettyPrint(builder.toString())
     
-        OkHttpClient okclient = new OkHttpClient()
-            .newBuilder()
-            .build()
+        def clientBuilder = new OkHttpClient().newBuilder()
+        if (clientConfigurer != null) {
+            clientConfigurer.call(clientBuilder)
+        }
+        OkHttpClient okclient = clientBuilder.build()
         MediaType mediaType = MediaType.parse("application/json")
 
         RequestBody body = RequestBody.create(mediaType, payload)
         def url = endpoint + "/repos/" + repoName + "/releases/generate-notes"
-        Request request = new Request.Builder()
+        
+        def reqBuilder = new Request.Builder()
             .url(url)
             .method("POST", body)
             .addHeader("Content-Type", "application/json")
             .addHeader("Accept", "application/vnd.github+json")
             .addHeader("X-GitHub-Api-Version", "2022-11-28")
-            .addHeader("Authorization", "Bearer " + token)
-            .build()
+        
+        if (token) {
+            reqBuilder.addHeader("Authorization", "Bearer " + token)
+        }
+
+        customHeaders.each { key, value ->
+            reqBuilder.addHeader(key, value)
+        }
+        Request request = reqBuilder.build()
+
         try(def response = okclient.newCall(request).execute()) {
             String content = response.body().string()
             def jsonSlurper = new JsonSlurper()
