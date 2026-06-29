@@ -63,7 +63,9 @@ public class GithubReleaseTask extends DefaultTask {
                 token: context.token,
                 targetCommitish: context.targetCommitish,
                 repoName: context.repoName,
-                endpoint: context.github.getApiUrl())
+                endpoint: context.endpoint,
+                clientConfigurer: context.clientConfigurer,
+                customHeaders: context.customHeaders)
                 .get()
                 
             context.body = context.body + notes.body
@@ -71,10 +73,14 @@ public class GithubReleaseTask extends DefaultTask {
         }
         if(context.dryRun) {
             println("DryRun:")
-            println(context)
+            def printedContext = context.clone()
+            if (printedContext.token) {
+                printedContext.token = "********"
+            }
+            println(printedContext)
         } else {
-            if(context.release && context.overwite) {
-                context.release.delete()
+            if(context.release && context.overwrite) {
+                context.client.deleteRelease(context.release.id)
                 context.release = null
             } else if (context.release && context.allowUploadToExisting) {
                 upload(context)
@@ -88,21 +94,21 @@ public class GithubReleaseTask extends DefaultTask {
     }
 
     def create(def context) {
-        
-        context.release = context.repo.createRelease(context.tagName)
-            .name(context.releaseName)
-            .commitish(context.targetCommitish)
-            .draft(context.draft)
-            .prerelease(context.prerelease)
-            .body(context.body)
-            .create()
+        context.release = context.client.createRelease(
+            context.tagName,
+            context.releaseName,
+            context.targetCommitish,
+            context.draft,
+            context.prerelease,
+            context.body
+        )
     }
 
     def upload(def context) {
         Tika tika = new Tika()
         for (asset in context.assets.files) {
             String mimetype = tika.detect(asset)
-            context.release.uploadAsset(asset, mimetype)
+            context.client.uploadAsset(context.release.upload_url, asset, mimetype)
         }
     }
 }
