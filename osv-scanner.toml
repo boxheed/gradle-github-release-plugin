@@ -9,4 +9,19 @@ reason = "Transitive dependency of nebula-test 11.12.0 via jackson-core 2.20.0"
 [[IgnoredVulns]]
 id = "GHSA-5jmj-h7xm-6q6v"
 ignoreUntil = 2026-10-01 # Optional exception expiry date
-reason = "Transitive dependency of github-api 1.330 via jackson-core 2.20.0"
+reason = "Transitive dependency of github-api 1.330 via jackson-databind 2.20.0"
+
+[[IgnoredVulns]]
+id = "GHSA-hgj6-7826-r7m5"
+ignoreUntil = 2026-10-01 # Optional exception expiry date
+reason = "Transitive dependency of github-api 1.330 via jackson-databind 2.20.0"
+
+[[IgnoredVulns]]
+id = "GHSA-j3rv-43j4-c7qm"
+ignoreUntil = 2026-10-01 # Optional exception expiry date
+reason = "Transitive dependency of github-api 1.330 via jackson-databind 2.20.0"
+
+[[IgnoredVulns]]
+id = "GHSA-rmj7-2vxq-3g9f"
+ignoreUntil = 2026-10-01 # Optional exception expiry date
+reason = "Transitive dependency of github-api 1.330 via jackson-databind 2.20.0"
