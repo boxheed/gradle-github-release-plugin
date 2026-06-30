@@ -55,11 +55,11 @@ public class GithubReleaseNotes {
 
         try(def response = okclient.newCall(request).execute()) {
             String content = response.body().string()
-            def jsonSlurper = new JsonSlurper()
-            def object = jsonSlurper.parseText(content)
             if(response.code != 200)  {
                 throw new IOException("Could not get changelog. status: " + response.code + " body: " + content)
             } else {
+                def jsonSlurper = new JsonSlurper()
+                def object = jsonSlurper.parseText(content)
                 return object
             }
         }
