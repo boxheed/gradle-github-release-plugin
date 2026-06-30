@@ -187,4 +187,127 @@ class GithubClientSpec extends Specification {
         request.getHeaders().get("X-Custom-From-Builder") == "yes"
         request.getHeaders().get("X-Custom-From-Map") == "indeed"
     }
+
+    def "listReleases returns list of releases"() {
+        given:
+        server.enqueue(new MockResponse.Builder()
+            .code(200)
+            .setHeader("Content-Type", "application/json")
+            .body('[{"id": 12345, "tag_name": "v1.0"}]')
+            .build())
+
+        when:
+        def releases = client.listReleases()
+
+        then:
+        releases != null
+        releases.size() == 1
+        releases[0].id == 12345
+        RecordedRequest request = server.takeRequest()
+        request.getUrl().encodedPath() == "/repos/owner/repo/releases"
+    }
+
+    def "throws IOException on failed getLogin"() {
+        given:
+        server.enqueue(new MockResponse.Builder().code(500).body("Error").build())
+
+        when:
+        client.getLogin()
+
+        then:
+        thrown(IOException)
+    }
+
+    def "throws IOException on failed getDefaultBranch"() {
+        given:
+        server.enqueue(new MockResponse.Builder().code(500).body("Error").build())
+
+        when:
+        client.getDefaultBranch()
+
+        then:
+        thrown(IOException)
+    }
+
+    def "throws IOException on failed getReleaseByTagName"() {
+        given:
+        server.enqueue(new MockResponse.Builder().code(500).body("Error").build())
+
+        when:
+        client.getReleaseByTagName("v1.0")
+
+        then:
+        thrown(IOException)
+    }
+
+    def "throws IOException on failed listReleases"() {
+        given:
+        server.enqueue(new MockResponse.Builder().code(500).body("Error").build())
+
+        when:
+        client.listReleases()
+
+        then:
+        thrown(IOException)
+    }
+
+    def "throws IOException on failed deleteRelease"() {
+        given:
+        server.enqueue(new MockResponse.Builder().code(500).body("Error").build())
+
+        when:
+        client.deleteRelease(12345)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "throws IOException on failed createRelease"() {
+        given:
+        server.enqueue(new MockResponse.Builder().code(500).body("Error").build())
+
+        when:
+        client.createRelease("v2.0", "Release v2.0", "main", false, false, "Description")
+
+        then:
+        thrown(IOException)
+    }
+
+    def "throws IOException on failed uploadAsset"() {
+        given:
+        server.enqueue(new MockResponse.Builder().code(500).body("Error").build())
+        File tempFile = File.createTempFile("test-asset", ".txt")
+        tempFile.write("Hello World")
+        def rawUploadUrl = server.url("/assets").toString()
+
+        when:
+        client.uploadAsset(rawUploadUrl, tempFile, "text/plain")
+
+        then:
+        thrown(IOException)
+
+        cleanup:
+        tempFile.delete()
+    }
+
+    def "builder does not include Authorization header when token is null"() {
+        given:
+        server.enqueue(new MockResponse.Builder()
+            .code(200)
+            .setHeader("Content-Type", "application/json")
+            .body('{"login": "user"}')
+            .build())
+        def baseUrl = server.url("").toString()
+        if (baseUrl.endsWith("/")) {
+            baseUrl = baseUrl.substring(0, baseUrl.length() - 1)
+        }
+        def noTokenClient = new GithubClient(null, baseUrl, "owner/repo", null, null)
+
+        when:
+        noTokenClient.getLogin()
+
+        then:
+        RecordedRequest request = server.takeRequest()
+        request.getHeaders().get("Authorization") == null
+    }
 }
