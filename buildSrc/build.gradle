@@ -15,7 +15,7 @@ dependencies {
   //########################################################
   
 
-  testImplementation 'com.netflix.nebula:nebula-test:12.4.3'
+  testImplementation 'com.netflix.nebula:nebula-test:12.4.4'
   testImplementation 'com.squareup.okhttp3:mockwebserver:5.4.0'
   testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 }
