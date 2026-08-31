@@ -48,7 +48,7 @@ dependencies {
   api gradleApi()
   api localGroovy()
   implementation 'com.squareup.okhttp3:okhttp:5.5.0'
-  implementation 'org.apache.tika:tika-core:3.3.2'
+  implementation 'org.apache.tika:tika-core:4.0.0'
 
   //########################################################
   //overriding the provided versions of these libraries as 
