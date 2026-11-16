@@ -4,20 +4,20 @@ repositories {
 
 dependencies {
 
-  implementation 'com.squareup.okhttp3:okhttp:5.5.0'
-  implementation 'org.apache.tika:tika-core:4.0.0'
+  implementation 'com.squareup.okhttp3:okhttp:5.5.1'
+  implementation 'org.apache.tika:tika-core:4.2.0'
 
   //########################################################
   //overriding the provided versions of these libraries as
   // they are not compatible with the dependency check plugin
-  implementation 'org.apache.commons:commons-lang3:3.20.0'
+  implementation 'org.apache.commons:commons-lang3:3.22.0'
   implementation 'org.apache.commons:commons-text:1.15.0'
   //########################################################
   
 
   testImplementation 'com.netflix.nebula:nebula-test:12.13.1'
-  testImplementation 'com.squareup.okhttp3:mockwebserver:5.5.0'
-  testImplementation 'org.spockframework:spock-core:2.4-groovy-4.0'
+  testImplementation 'com.squareup.okhttp3:mockwebserver:5.5.1'
+  testImplementation 'org.spockframework:spock-core:2.5-groovy-4.0'
   testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.3")
 }
 
